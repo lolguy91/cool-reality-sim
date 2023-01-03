@@ -7,6 +7,7 @@ import os
 YELLOW = (255, 255, 0)
 
 pygame.init()
+clock = pygame.time.Clock()
 screen = pygame.display.set_mode((800, 600))
 phisycs.init()
 def debug(dt):
@@ -29,8 +30,9 @@ def loop(dt):
 lasttime = 0
 running = True
 while running:
-    t = pygame.time.get_ticks()
+    t = clock.tick(24)
     dt = (t - lasttime) / 1000.0
+    
     lasttime = t
     if dt == 0:
         dt = 1

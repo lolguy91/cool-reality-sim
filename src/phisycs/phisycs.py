@@ -12,9 +12,6 @@ def dist2mag(dist,p1,p2,dt):
     
     return (value * 2.25432e-13) / dt# our scale
 #                   ^space scale   ^time scale
-# Iok
-#https://lolguy91-fantastic-eureka-gwgvpj4r654hw79r-6080.preview.app.github.dev/
-#this is the intresting part, its the math, I asked ChatGPT for the formulas and values
 
 def normalize(v):
        return (v[0] / math.sqrt(abs(v[0]**2 + v[0]**2)),v[1] / math.sqrt(abs(v[1]**2 + v[1]**2)))
@@ -35,19 +32,18 @@ def applyEM(x,x2,y,y2, p1,p2,dt):
     
     return (dirx * mag,diry * mag)
 
-def mkelectron(x,y):
-    particles.append(particle.Particle((x,y),10,-1,9.10938e-31))
+def mkelectron(x,y,_startvel = (0,0)):
+    particles.append(particle.Particle((x,y),10,-1,9.10938e-31,_startvel))
 
-def mkproton(x,y):
-    particles.append(particle.Particle((x,y),20,1,1.67262e-27))
+def mkproton(x,y,_startvel = (0,0)):
+    particles.append(particle.Particle((x,y),20,1,1.67262e-27,_startvel))
     
 def init():
     mkproton(0,0)
+    mkelectron(100,0,(-7,15))
     
 def update(dt):
     for particle in particles:
-        if(particle.velocity != (0,0)):
-            particle.velocity = normalize(particle.velocity)
         x,y = particle.coords
         
         for particle2 in particles:
