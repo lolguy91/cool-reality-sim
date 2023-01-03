@@ -1,5 +1,13 @@
 import phisycs.particle as particle
-import math 
+import math
+import numpy as np
+
+
+
+
+
+
+
 
 particles = []
 def Coulomb(dist,c1,c2):
@@ -38,10 +46,30 @@ def mkelectron(x,y,_startvel = (0,0)):
 def mkproton(x,y,_startvel = (0,0)):
     particles.append(particle.Particle((x,y),20,1,1.67262e-27,_startvel))
     
-def init():
-    mkproton(0,0)
-    mkelectron(100,0,(-7,15))
+def mkneutron(x,y,_startvel = (0,0)):
+    particles.append(particle.Particle((x,y),20,0,1.67262e-27,_startvel))
     
+def init():
+    add_hydrogen(0,0)
+    
+
+def add_hydrogen(ox,oy):
+    mkproton(ox,oy)
+    mkneutron(ox+10,oy+20)
+    mkelectron(ox+200,oy,   calculate_orbit_velocity(200,0,ox,oy))
+
+def calculate_orbit_velocity(x,y,ox,oy):
+    c = (x - ox) + (y - oy) * 1j
+    a = np.abs(c)
+    c /= a
+    angle = np.log(c) / (2j * np.pi)
+    angle += a / 777
+    c = a * np.exp(2j * np.pi * angle)
+    nextpos = (np.real(c), np.imag(c))
+    vel = 10
+    return (math.sin(angle) * vel,math.cos(angle) * vel)
+    
+
 def update(dt):
     for particle in particles:
         x,y = particle.coords
