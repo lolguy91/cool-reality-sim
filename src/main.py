@@ -1,15 +1,17 @@
 import pygame
 import render.render as render
+import render.UI as Ui
 import render.particlerenderer as pr
 import phisycs.phisycs as phisycs
 import os
 
-YELLOW = (255, 255, 0)
+def left_click(x,y):
+    phisycs.mkelectron((x* pr.scale)- 400,(y * pr.scale) - 300)
+def middle_click(x,y):
+    phisycs.mkneutron((x* pr.scale)- 400,(y * pr.scale) - 300)
+def right_click(x,y):
+    phisycs.mkproton((x* pr.scale)- 400,(y * pr.scale) - 300)
 
-pygame.init()
-clock = pygame.time.Clock()
-screen = pygame.display.set_mode((800, 600))
-phisycs.init()
 def debug(dt):
     i = 0
     os.system("clear")
@@ -19,13 +21,34 @@ def debug(dt):
     for particle in phisycs.particles:
         i+=1
         print("Particle #",i,":X=", int(particle.coords[0]),", Y=", int(particle.coords[1]),",Xvel=",particle.velocity[0],",Yvel=",particle.velocity[1])
+def Render():
+    screen.fill((16,16,16))#clear the screen
+    
+    display.fill((16,16,16))#clear the display(where the particles are showing)
+    
+    pr.renderParticles(display)#render the stuff
+    
+    prect = pygame.Rect(0,0,0,0)                                                                        #position
+    srect = pygame.Rect(0,0,690,481)                                                                    #size
+    screen.blit(display,prect,srect)#draw the display to the screen
+    
+    Ui.update(screen,dt)#add the UI
 
 def loop(dt):
     debug(dt)
     phisycs.update(dt)
-    screen.fill((16,16,16))
-    pr.renderParticles(screen)
+    Render()
     pygame.display.update()
+
+pygame.init()
+
+clock = pygame.time.Clock()
+screen = pygame.display.set_mode((800, 600))
+display = pygame.Surface((800,600))
+
+phisycs.init()
+Ui.init()
+
 
 lasttime = 0
 running = True
@@ -41,5 +64,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            phisycs.mkelectron((event.pos[0]* pr.scale)- 400,(event.pos[1] * pr.scale) - 300)
+            if event.button == 1:
+                left_click(event.pos[0],event.pos[1])
+            if event.button == 2:
+                middle_click(event.pos[0],event.pos[1])
+            if event.button == 3:
+                right_click(event.pos[0],event.pos[1])
+            
 pygame.quit()# https://lolguy91-fantastic-eureka-gwgvpj4r654hw79r-6080.preview.app.github.dev/
