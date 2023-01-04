@@ -4,11 +4,6 @@ import numpy as np
 
 
 
-
-
-
-
-
 particles = []
 def Coulomb(dist,c1,c2):
     return 8.98755e11 * ( c1*c2 ) / dist ** 2# !! it returns its result in Newtons
@@ -50,16 +45,17 @@ def mkneutron(x,y,_startvel = (0,0)):
     particles.append(particle.Particle((x,y),20,0,1.67262e-27,_startvel))
     
 def init():
-    add_hydrogen(0,0)
+    add_hydrogen(200,0)
+    add_hydrogen(-200,0)
     
 
 def add_hydrogen(ox,oy):
     mkproton(ox,oy)
     mkneutron(ox+10,oy+20)
-    mkelectron(ox+200,oy,   calculate_orbit_velocity(200,0,ox,oy))
+    mkelectron(ox+200,oy,   calculate_orbit_velocity(200,0))
 
-def calculate_orbit_velocity(x,y,ox,oy):
-    c = (x - ox) + (y - oy) * 1j
+def calculate_orbit_velocity(x,y):
+    c = x + y * 1j
     a = np.abs(c)
     c /= a
     angle = np.log(c) / (2j * np.pi)
@@ -80,7 +76,6 @@ def update(dt):
             x2,y2 = particle2.coords
             particle.velocity = (particle.velocity[0] - applyEM(x,x2,y,y2,particle,particle2,dt)[0],particle.velocity[1] - applyEM(x,x2,y,y2,particle,particle2,dt)[1])
     
-    #it adds to the list if I use += like why? 
-    particle.coords = ((particle.coords[0] + (particle.velocity[0] * dt)),(particle.coords[1] + (particle.velocity[1] *dt)))# python fucking sucks Im gonna get more ppl to work on this (on discord)
+        particle.coords = (particle.coords[0] + (particle.velocity[0] * dt),particle.coords[1] + (particle.velocity[1] *dt))# python fucking sucks
         
         
