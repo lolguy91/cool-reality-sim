@@ -2,15 +2,17 @@ import pygame
 import render.render as render
 import render.UI as Ui
 import render.particlerenderer as pr
+import system.preset as preset
 import phisycs.phisycs as phisycs
+import phisycs.particle as part
 import os
 
 def left_click(x,y):
-    phisycs.mkelectron((x* pr.scale)- 400,(y * pr.scale) - 300)
+    phisycs.addelectron((x* pr.scale)- 400,(y * pr.scale) - 300)
 def middle_click(x,y):
-    phisycs.mkneutron((x* pr.scale)- 400,(y * pr.scale) - 300)
+    phisycs.addneutron((x* pr.scale)- 400,(y * pr.scale) - 300)
 def right_click(x,y):
-    phisycs.mkproton((x* pr.scale)- 400,(y * pr.scale) - 300)
+    phisycs.addproton((x* pr.scale)- 400,(y * pr.scale) - 300)
 
 def debug(dt):
     i = 0
@@ -28,14 +30,18 @@ def Render():
     
     pr.renderParticles(display)#render the stuff
     
-    prect = pygame.Rect(0,0,0,0)                                                                        #position
-    srect = pygame.Rect(0,0,690,481)                                                                    #size
-    screen.blit(display,prect,srect)#draw the display to the screen
+    lol = render.RenderPreset(preset.Preset([part.mkelectron(0,0),part.mkproton(10,10)],"ass"))
+    
+    render.blit(lol,display,0,0,100,100)
+    
+    render.blit(display,screen,0,0,690,481)#draw the display to the screen
     
     Ui.update(screen,dt)#add the UI
+    
 
+    
 def loop(dt):
-    debug(dt)
+    #debug(dt)
     phisycs.update(dt)
     Render()
     pygame.display.update()

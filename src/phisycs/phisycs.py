@@ -58,13 +58,13 @@ def applyG(x,x2,y,y2, p1,p2,dt):
     
     return (dirx * mag,diry * mag)
 
-def mkelectron(x,y,_startvel = (0,0)):
+def addelectron(x,y,_startvel = (0,0)):
     particles.append(particle.Particle((x,y),10,-1,9.10938e-31,_startvel))
 
-def mkproton(x,y,_startvel = (0,0)):
+def addproton(x,y,_startvel = (0,0)):
     particles.append(particle.Particle((x,y),20,1,1.67262e-27,_startvel))
     
-def mkneutron(x,y,_startvel = (0,0)):
+def addneutron(x,y,_startvel = (0,0)):
     particles.append(particle.Particle((x,y),20,0,1.67262e-27,_startvel))
     
 def init():
@@ -72,9 +72,9 @@ def init():
     
 
 def add_hydrogen(ox,oy):
-    mkproton(ox,oy)
-    mkneutron(ox+10,oy+20)
-    mkelectron(ox+200,oy,   calculate_orbit_velocity(200,0))
+    addproton(ox,oy)
+    addneutron(ox+10,oy+20)
+    addelectron(ox+200,oy,   calculate_orbit_velocity(200,0))
 
 def calculate_orbit_velocity(x,y):
     c = x + y * 1j

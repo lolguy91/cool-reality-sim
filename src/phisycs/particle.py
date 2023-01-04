@@ -13,4 +13,13 @@ class Particle:
         self.mass = _mass
         self.velocity = _startvel
         
+def mkelectron(x,y,_startvel = (0,0)):
+    return Particle((x,y),10,-1,9.10938e-31,_startvel)
+    
+def mkproton(x,y,_startvel = (0,0)):
+    return Particle((x,y),20,1,1.67262e-27,_startvel)
+
+def mkneutron(x,y,_startvel = (0,0)):
+    return Particle((x,y),20,0,1.67262e-27,_startvel)
+        
         
