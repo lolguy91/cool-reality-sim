@@ -1,10 +1,11 @@
 import phisycs.particle as particle
 import math
 import numpy as np
-
+import system.preset as preset
 
 
 particles = []
+paused = True
 def CoulombEM(dist,c1,c2):
     return (8.98755e11 * ( c1*c2 )) / (dist ** 2)# !! it returns its result in Newtons
 def CoulombG(dist,m1,m2):
@@ -68,7 +69,8 @@ def addneutron(x,y,_startvel = (0,0)):
     particles.append(particle.Particle((x,y),20,0,1.67262e-27,_startvel))
     
 def init():
-    add_hydrogen(0,0)
+    ass = preset.Preset([particle.mkelectron(0,0),particle.mkproton(10,10)],"ass")
+    preset.PlacePreset(ass,0,0)
     
 
 def add_hydrogen(ox,oy):
@@ -86,18 +88,19 @@ def calculate_orbit_velocity(x,y):
     
 
 def update(dt):
-    for particle in particles:
-        x,y = particle.coords
-        
-        for particle2 in particles:
-            if particle2 == particle: continue
-            
-            x2,y2 = particle2.coords
-            
-            em = applyEM(x,x2,y,y2,particle,particle2,dt)
-            g =  applyG(x,x2,y,y2,particle,particle2,dt)
-            particle.velocity = (particle.velocity[0] - em[0] - g[0],particle.velocity[1] - em[1] - g[1])
-    
-        particle.coords = (particle.coords[0] + (particle.velocity[0] * dt),particle.coords[1] + (particle.velocity[1] *dt))# python fucking sucks
+    if not paused:
+        for particle in particles:
+            x,y = particle.coords
+
+            for particle2 in particles:
+                if particle2 == particle: continue
+
+                x2,y2 = particle2.coords
+
+                em = applyEM(x,x2,y,y2,particle,particle2,dt)
+                g =  applyG(x,x2,y,y2,particle,particle2,dt)
+                particle.velocity = (particle.velocity[0] - em[0] - g[0],particle.velocity[1] - em[1] - g[1])
+
+            particle.coords = (particle.coords[0] + (particle.velocity[0] * dt),particle.coords[1] + (particle.velocity[1] *dt))# python fucking sucks
         
         

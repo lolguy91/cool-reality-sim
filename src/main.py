@@ -7,7 +7,10 @@ import phisycs.particle as part
 import os
 
 def left_click(x,y):
-    phisycs.addelectron((x* pr.scale)- 400,(y * pr.scale) - 300)
+    if x < 690 and y < 482:
+        phisycs.addelectron((x* pr.scale)- 400,(y * pr.scale) - 300)
+    else:
+        phisycs.paused = not phisycs.paused
 def middle_click(x,y):
     phisycs.addneutron((x* pr.scale)- 400,(y * pr.scale) - 300)
 def right_click(x,y):
@@ -38,7 +41,7 @@ def Render():
 
     
 def loop(dt):
-    #debug(dt)
+    debug(dt)
     phisycs.update(dt)
     Render()
     pygame.display.update()
