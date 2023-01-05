@@ -16,7 +16,6 @@ def RenderPreset(preset):
             x = (abs(x2)* 2) + 30
         if y2 < 0 and abs(y2) > (y / 2):
             y = (abs(y2)* 2) + 30
-            
     if x == 0:
         x = 40
     
@@ -25,7 +24,7 @@ def RenderPreset(preset):
         
     
     surface = pygame.Surface((x,y))
-    print(x,y)
+    
     defscl = x
     if y < x:
         defscl = y
